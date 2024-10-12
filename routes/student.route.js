@@ -5,13 +5,12 @@ import { promisify } from "util";
 
 import { authenticate, authorizeAdmin } from "../middleware/auth.js";
 
-// Promisify db methods
 const dbRun = promisify(db.run.bind(db));
 const dbAll = promisify(db.all.bind(db));
 
 const router = express.Router();
 
-// Update student route
+// Update student 
 router.put(
   "/update-student/:id",
   authenticate,
@@ -72,7 +71,7 @@ router.put(
   }
 );
 
-// Delete student by ID route
+// Delete student by ID
 router.delete("/delete/:id", authenticate, authorizeAdmin, async (req, res) => {
   const { id } = req.params;
 
@@ -86,8 +85,8 @@ router.delete("/delete/:id", authenticate, authorizeAdmin, async (req, res) => {
   }
 });
 
-// Get all users route (admin-only)
-router.get("/students", authenticate, authorizeAdmin, async (req, res) => {
+// Get all users 
+router.get("/students", authenticate, async (req, res) => {
   try {
     const rows = await dbAll(`SELECT * FROM students`);
     res.status(200).json(rows.map(({ password, ...user }) => user)); // Exclude passwords from response
@@ -96,7 +95,7 @@ router.get("/students", authenticate, authorizeAdmin, async (req, res) => {
   }
 });
 
-// Delete all students route
+// Delete all students 
 router.delete(
   "/delete-all-students",
   authenticate,

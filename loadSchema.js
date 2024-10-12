@@ -5,7 +5,7 @@ import path from "path";
 const dbPath = path.resolve("database.db");
 const schemaPath = path.resolve("./config/schema.sql");
 
-// Create the database connection
+// Creating the database connection
 export const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error("Error connecting to the database:", err.message);
@@ -38,14 +38,3 @@ const loadSchema = () => {
 
 loadSchema();
 
-// Gracefully handle shutdown and close the database connection
-process.on("SIGINT", () => {
-  db.close((err) => {
-    if (err) {
-      console.error("Error closing the database connection:", err.message);
-    } else {
-      console.log("Database connection closed");
-    }
-    process.exit(0); // Exit with success
-  });
-});

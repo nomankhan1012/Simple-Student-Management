@@ -5,7 +5,6 @@ import { promisify } from "util";
 
 import { authenticate, authorizeAdmin } from "../middleware/auth.js";
 
-// Promisify db methods
 const dbRun = promisify(db.run.bind(db));
 const dbAll = promisify(db.all.bind(db));
 
@@ -35,7 +34,7 @@ router.post("/create-instructor",authenticate, authorizeAdmin, async (req, res) 
   }
 });
 
-// Get all instructors route
+// Get all instructors 
 router.get("/instructors", authenticate,async (req, res) => {
   try {
     const rows = await dbAll(`SELECT * FROM instructors`);
@@ -45,7 +44,7 @@ router.get("/instructors", authenticate,async (req, res) => {
   }
 });
 
-// Update instructor by ID route
+// Update instructor by ID 
 router.put("/update-instructor/:id", authenticate,authorizeAdmin, async (req, res) => {
   const { id } = req.params;
   const { first_name, last_name, email, phone, department } = req.body;
@@ -62,7 +61,7 @@ router.put("/update-instructor/:id", authenticate,authorizeAdmin, async (req, re
   }
 });
 
-// Delete instructor by ID route
+// Delete instructor by ID 
 router.delete("/delete-instructor/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -76,6 +75,7 @@ router.delete("/delete-instructor/:id", async (req, res) => {
   }
 });
 
+// Delete all Instructors
 router.delete("/delete-all-instructors", authenticate,authorizeAdmin,async (req, res) => {
   try {
     await dbRun(`DELETE FROM instructors`);
